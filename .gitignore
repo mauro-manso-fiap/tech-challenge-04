@@ -1,0 +1,59 @@
+# Python cache and bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Build and packaging
+build/
+dist/
+.eggs/
+*.egg-info/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Conda
+.conda/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Test and tooling cache
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# IDE and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs and temp
+*.log
+tmp/
+temp/
+
+# Project artifacts
+reports/**/*.html
+reports/**/*.png
+reports/**/*.jpg
+reports/**/*.pdf
+.docs/**/*.pdf
+.docs/**/*.png
+
+# Ignore all actual data files but keep folder structure
+# Keep placeholder files and docs needed to explain data download.
+data/**
+!data/
+!data/**/
+!data/**/.gitkeep
+!data/README.md
+
+# Enviroment Files
+*.env
