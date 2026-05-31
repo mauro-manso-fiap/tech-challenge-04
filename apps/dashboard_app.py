@@ -328,6 +328,31 @@ with tab2:
     )
     st.plotly_chart(fig_corr, use_container_width=True)
 
+    # Legenda das siglas
+    st.markdown(
+        """
+        **📖 Legenda das Siglas:**
+
+        | Sigla | Significado |
+        |-------|-------------|
+        | **Weight** | Peso corporal (kg) |
+        | **Height** | Altura (m) |
+        | **Age** | Idade (anos) |
+        | **FCVC** | Frequência de consumo de vegetais |
+        | **NCP** | Número de refeições principais por dia |
+        | **CH2O** | Consumo diário de água (litros) |
+        | **FAF** | Frequência de atividade física |
+        | **TUE** | Tempo de uso de tecnologia/telas por dia |
+        | **Gender** | Gênero (Masculino/Feminino) |
+        | **family_history** | Histórico familiar de obesidade |
+        | **FAVC** | Consumo frequente de alimentos calóricos |
+        | **CAEC** | Consumo de alimentos entre refeições |
+        | **SMOKE** | Tabagismo |
+        | **SCC** | Monitoramento de calorias consumidas |
+        | **CALC** | Consumo de álcool |
+        """
+    )
+
     st.info(
         "💡 **Interpretação:** Peso corporal (Weight) e IMC (calculado internamente) apresentam as "
         "correlações positivas mais fortes com o nível de obesidade. Frequência de atividade física (FAF) "
@@ -430,15 +455,40 @@ with tab4:
     fh_df = _get_family_history_impact()
     fh_filtered = fh_df[fh_df["class_pt"].isin(classes_pt_selecionadas)].copy()
 
-    # Formato longo para plotly
+    # Nota explicativa sobre os percentuais
+    st.caption(
+        "📊 Os percentuais representam a proporção de cada classe **dentro do grupo** "
+        "(com ou sem histórico familiar). Cada grupo soma 100% quando todas as 7 classes estão selecionadas. "
+        "Se classes foram filtradas, os percentuais refletem apenas as classes visíveis."
+    )
+
+    # Recalcular percentuais para que somem 100% dentro das classes visíveis
+    with_total = fh_filtered["with_history_pct"].sum()
+    without_total = fh_filtered["without_history_pct"].sum()
+
+    if with_total > 0:
+        fh_filtered["with_history_pct_norm"] = (
+            fh_filtered["with_history_pct"] / with_total * 100
+        ).round(1)
+    else:
+        fh_filtered["with_history_pct_norm"] = 0.0
+
+    if without_total > 0:
+        fh_filtered["without_history_pct_norm"] = (
+            fh_filtered["without_history_pct"] / without_total * 100
+        ).round(1)
+    else:
+        fh_filtered["without_history_pct_norm"] = 0.0
+
+    # Formato longo para plotly (usando percentuais normalizados)
     fh_long = fh_filtered.melt(
         id_vars="class_pt",
-        value_vars=["with_history_pct", "without_history_pct"],
+        value_vars=["with_history_pct_norm", "without_history_pct_norm"],
         var_name="Histórico Familiar",
         value_name="Percentual (%)",
     )
     fh_long["Histórico Familiar"] = fh_long["Histórico Familiar"].map(
-        {"with_history_pct": "Com histórico familiar", "without_history_pct": "Sem histórico familiar"}
+        {"with_history_pct_norm": "Com histórico familiar", "without_history_pct_norm": "Sem histórico familiar"}
     )
 
     fig_fh = px.bar(
@@ -541,6 +591,30 @@ with tab5:
         "Fatores com correlação **negativa** (azul) indicam que valores mais altos estão associados "
         "a menor risco — como a frequência de atividade física (FAF)."
     )
+
+    # Legenda das siglas nos fatores de risco
+    with st.expander("📖 Legenda das Siglas"):
+        st.markdown(
+            """
+            | Sigla | Significado |
+            |-------|-------------|
+            | **Weight** | Peso corporal (kg) |
+            | **Height** | Altura (m) |
+            | **Age** | Idade (anos) |
+            | **FCVC** | Frequência de consumo de vegetais |
+            | **NCP** | Número de refeições principais por dia |
+            | **CH2O** | Consumo diário de água (litros) |
+            | **FAF** | Frequência de atividade física |
+            | **TUE** | Tempo de uso de tecnologia/telas por dia |
+            | **Gender** | Gênero (Masculino/Feminino) |
+            | **family_history** | Histórico familiar de obesidade |
+            | **FAVC** | Consumo frequente de alimentos calóricos |
+            | **CAEC** | Consumo de alimentos entre refeições |
+            | **SMOKE** | Tabagismo |
+            | **SCC** | Monitoramento de calorias consumidas |
+            | **CALC** | Consumo de álcool |
+            """
+        )
 
 # ---------------------------------------------------------------------------
 # Rodapé

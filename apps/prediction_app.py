@@ -304,14 +304,16 @@ def main() -> None:
                 options=["Sim", "Não"],
             )
 
-            fcvc = st.number_input(
-                "Freq. Consumo de Vegetais (0–3)",
-                min_value=float(NUMERIC_RANGES["FCVC"][0]),
-                max_value=float(NUMERIC_RANGES["FCVC"][1]),
-                value=2.0,
-                step=0.5,
-                format="%.1f",
-                help="0 = Nunca, 1 = Às vezes, 2 = Frequentemente, 3 = Sempre",
+            _FCVC_OPTIONS = {
+                "Nunca": 0.0,
+                "Às vezes": 1.0,
+                "Frequentemente": 2.0,
+                "Sempre": 3.0,
+            }
+            fcvc_label = st.selectbox(
+                "Consumo de Vegetais",
+                options=list(_FCVC_OPTIONS.keys()),
+                index=2,  # default: Frequentemente
             )
 
             ncp = st.number_input(
@@ -338,14 +340,16 @@ def main() -> None:
                 options=["Não", "Sim"],
             )
 
-            ch2o = st.number_input(
-                "Consumo Diário de Água (0–3)",
-                min_value=float(NUMERIC_RANGES["CH2O"][0]),
-                max_value=float(NUMERIC_RANGES["CH2O"][1]),
-                value=2.0,
-                step=0.5,
-                format="%.1f",
-                help="0 = Menos de 1L, 1 = Entre 1–2L, 2 = Entre 2–3L, 3 = Mais de 3L",
+            _CH2O_OPTIONS = {
+                "Menos de 1 litro": 0.0,
+                "Entre 1 e 2 litros": 1.0,
+                "Entre 2 e 3 litros": 2.0,
+                "Mais de 3 litros": 3.0,
+            }
+            ch2o_label = st.selectbox(
+                "Consumo Diário de Água",
+                options=list(_CH2O_OPTIONS.keys()),
+                index=2,  # default: Entre 2 e 3 litros
             )
 
             scc_label = st.selectbox(
@@ -357,24 +361,24 @@ def main() -> None:
         with col4:
             st.markdown("**Atividade Física e Transporte**")
 
-            faf = st.number_input(
-                "Freq. de Atividade Física (0–3)",
-                min_value=float(NUMERIC_RANGES["FAF"][0]),
-                max_value=float(NUMERIC_RANGES["FAF"][1]),
-                value=1.0,
-                step=0.5,
-                format="%.1f",
-                help="0 = Nenhuma, 1 = 1–2 dias/semana, 2 = 3–4 dias/semana, 3 = 4–5 dias/semana",
+            faf_dias = st.number_input(
+                "Dias de Atividade Física por Semana",
+                min_value=0,
+                max_value=7,
+                value=2,
+                step=1,
+                help="Quantos dias por semana você pratica atividade física?",
             )
 
-            tue = st.number_input(
-                "Tempo de Uso de Tecnologia/dia (0–2)",
-                min_value=float(NUMERIC_RANGES["TUE"][0]),
-                max_value=float(NUMERIC_RANGES["TUE"][1]),
-                value=1.0,
-                step=0.5,
-                format="%.1f",
-                help="0 = 0–2h, 1 = 3–5h, 2 = Mais de 5h",
+            _TUE_OPTIONS = {
+                "0 a 2 horas": 0.0,
+                "3 a 5 horas": 1.0,
+                "Mais de 5 horas": 2.0,
+            }
+            tue_label = st.selectbox(
+                "Tempo de Uso de Telas por Dia",
+                options=list(_TUE_OPTIONS.keys()),
+                index=1,  # default: 3 a 5 horas
             )
 
             calc_label = st.selectbox(
@@ -399,6 +403,27 @@ def main() -> None:
     # -----------------------------------------------------------------------
 
     if submitted:
+        # --- Conversões internas ---
+        # FAF: dias/semana (0-7) → escala 0-3 do modelo
+        # 0 dias = 0, 1-2 dias = 1, 3-4 dias = 2, 5+ dias = 3
+        if faf_dias == 0:
+            faf_model = 0.0
+        elif faf_dias <= 2:
+            faf_model = 1.0
+        elif faf_dias <= 4:
+            faf_model = 2.0
+        else:
+            faf_model = 3.0  # 5, 6 ou 7 dias → cap em 3
+
+        # TUE: label → valor do modelo
+        tue_model = _TUE_OPTIONS[tue_label]
+
+        # CH2O: label → valor do modelo
+        ch2o_model = _CH2O_OPTIONS[ch2o_label]
+
+        # FCVC: label → valor do modelo
+        fcvc_model = _FCVC_OPTIONS[fcvc_label]
+
         # Converter labels PT-BR para valores do dataset
         input_data = {
             "Gender": GENDER_OPTIONS[gender_label],
@@ -407,14 +432,14 @@ def main() -> None:
             "Weight": float(weight),
             "family_history": "yes" if family_history_label == "Sim" else "no",
             "FAVC": "yes" if favc_label == "Sim" else "no",
-            "FCVC": float(fcvc),
+            "FCVC": fcvc_model,
             "NCP": float(ncp),
             "CAEC": CAEC_OPTIONS[caec_label],
             "SMOKE": "yes" if smoke_label == "Sim" else "no",
-            "CH2O": float(ch2o),
+            "CH2O": ch2o_model,
             "SCC": "yes" if scc_label == "Sim" else "no",
-            "FAF": float(faf),
-            "TUE": float(tue),
+            "FAF": faf_model,
+            "TUE": tue_model,
             "CALC": CALC_OPTIONS[calc_label],
             "MTRANS": MTRANS_OPTIONS[mtrans_label],
         }

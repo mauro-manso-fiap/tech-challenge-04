@@ -14,15 +14,15 @@ Projeto de machine learning para classificação do nível de obesidade com base
 
 O projeto utiliza o dataset **ObesityDataSet** (2.087 registros, 17 features) para treinar um modelo de classificação multiclasse capaz de predizer 7 categorias de peso corporal:
 
-| Categoria | Descrição |
-|-----------|-----------|
-| Insufficient Weight | Abaixo do peso |
-| Normal Weight | Peso normal |
-| Overweight Level I | Sobrepeso grau I |
-| Overweight Level II | Sobrepeso grau II |
-| Obesity Type I | Obesidade grau I |
-| Obesity Type II | Obesidade grau II |
-| Obesity Type III | Obesidade grau III (mórbida) |
+| Categoria           | Descrição                    |
+| ------------------- | ---------------------------- |
+| Insufficient Weight | Abaixo do peso               |
+| Normal Weight       | Peso normal                  |
+| Overweight Level I  | Sobrepeso grau I             |
+| Overweight Level II | Sobrepeso grau II            |
+| Obesity Type I      | Obesidade grau I             |
+| Obesity Type II     | Obesidade grau II            |
+| Obesity Type III    | Obesidade grau III (mórbida) |
 
 **Objetivo:** Fornecer uma ferramenta de apoio à decisão clínica que, a partir de informações do paciente, classifica o nível de obesidade com alta acurácia e apresenta recomendações contextualizadas — tudo em Português Brasileiro.
 
@@ -56,7 +56,7 @@ O fluxo completo:
 
 ## Estrutura do Projeto
 
-```
+```text
 tech-challenge-04/
 │
 ├── apps/
@@ -172,78 +172,42 @@ streamlit run apps/dashboard_app.py
 
 ## Desempenho do Modelo
 
-| Métrica | Valor |
-|---------|-------|
-| Tipo de modelo | Random Forest |
-| Versão | v1 |
-| Acurácia (test set) | **98,41%** |
-| F1-Score Macro | **98,35%** |
-| Data de treinamento | 2026-05-31 |
-| Amostras de treino | 1.773 |
-| Amostras de teste | 314 |
+| Métrica             | Valor         |
+| ------------------- | ------------- |
+| Tipo de modelo      | Random Forest |
+| Versão              | v1            |
+| Acurácia (test set) | **98,41%**    |
+| F1-Score Macro      | **98,35%**    |
+| Data de treinamento | 2026-05-31    |
+| Amostras de treino  | 1.773         |
+| Amostras de teste   | 314           |
 
 **Hiperparâmetros otimizados via Optuna:**
 
-| Parâmetro | Valor |
-|-----------|-------|
-| n_estimators | 250 |
-| max_depth | 29 |
-| min_samples_split | 8 |
-| min_samples_leaf | 3 |
-| max_features | sqrt |
+| Parâmetro         | Valor |
+| ----------------- | ----- |
+| n_estimators      | 250   |
+| max_depth         | 29    |
+| min_samples_split | 8     |
+| min_samples_leaf  | 3     |
+| max_features      | sqrt  |
 
 O experimento completo está rastreado via **MLflow** em `mlruns/` (não versionado no git).
 
 ---
 
-## Deploy no Streamlit Cloud
-
-> ⚠️ **ATENÇÃO:** O Streamlit Cloud ignora arquivos `.python-version` e `runtime.txt`. A versão do Python **deve ser definida obrigatoriamente pela interface**, antes de clicar em Deploy.
-
-### Passo a passo
-
-1. Acesse [share.streamlit.io](https://share.streamlit.io) e faça login com sua conta GitHub
-2. Clique em **"Create app"**
-3. Selecione o repositório, branch (`main`) e o arquivo do app (ex: `apps/prediction_app.py`)
-4. **Antes de clicar em Deploy**, clique em **"Advanced settings"**
-5. No dropdown **"Python version"**, selecione **3.11**
-6. Clique em **"Save"** e depois em **"Deploy"**
-7. Repita o processo para o segundo app (`apps/dashboard_app.py`)
-
-### Troubleshooting
-
-| Erro | Causa | Solução |
-|------|-------|---------|
-| `Failed to build pillow` + `zlib not found` | Python 3.14 selecionado (padrão 2025-2026) | Deletar o app e recriar selecionando Python 3.11 em Advanced Settings |
-| `scikit_learn-X.X.X.tar.gz` (compilando do source) | Mesmo problema — sem wheel `cp311` | Mesma solução acima |
-| `ModuleNotFoundError: No module named 'src'` | App iniciado fora da raiz do repositório | Verificar se o "Main file path" aponta para `apps/prediction_app.py` |
-
----
-
-## Apps Publicados
-
-> 📋 Siga o [`DEPLOY_GUIDE.md`](DEPLOY_GUIDE.md) para publicar os apps no Streamlit Cloud com Python 3.11.
-> Após o deploy, substitua os links abaixo pelas URLs públicas geradas.
-
-| App | Link |
-|-----|------|
-| 🔮 App de Predição de Obesidade | *(URL disponível após deploy — ver DEPLOY_GUIDE.md)* |
-| 📊 Dashboard Analítico | *(URL disponível após deploy — ver DEPLOY_GUIDE.md)* |
-
----
-
 ## Stack Tecnológica
 
-| Categoria | Tecnologias |
-|-----------|-------------|
-| Linguagem | Python 3.11 |
-| ML | scikit-learn 1.5.1, XGBoost |
-| Otimização | Optuna |
-| Rastreamento | MLflow |
+| Categoria    | Tecnologias                 |
+| ------------ | --------------------------- |
+| Linguagem    | Python 3.11                 |
+| ML           | scikit-learn 1.5.1, XGBoost |
+| Otimização   | Optuna                      |
+| Rastreamento | MLflow                      |
 | Visualização | Plotly, Matplotlib, Seaborn |
-| Web App | Streamlit 1.37.0 |
-| Dados | pandas 2.2.2, numpy 1.26.4 |
-| Testes | pytest |
+| Web App      | Streamlit 1.37.0            |
+| Dados        | pandas 2.2.2, numpy 1.26.4  |
+| Testes       | pytest                      |
 
 ---
 
@@ -259,4 +223,4 @@ Este projeto está licenciado sob a [MIT License](LICENSE).
 
 ---
 
-*Tech Challenge 04 — PosTech Data Analytics — FIAP*
+*Tech Challenge 04 — PosTech Data Analytics — FIAP*.
