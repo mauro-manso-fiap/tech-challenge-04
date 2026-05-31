@@ -211,6 +211,15 @@ O experimento completo está rastreado via **MLflow** em `mlruns/` (não version
 
 ---
 
+## Apps Publicados
+
+| App | Link |
+| ----- | ------ |
+| 🔮 App de Predição de Obesidade | [https://tech-challenge-04-hkhqwnvrfngfxvtyq67dnx.streamlit.app/](https://tech-challenge-04-hkhqwnvrfngfxvtyq67dnx.streamlit.app/) |
+| 📊 Dashboard Analítico | [https://tech-challenge-04-y6hf8k3m2jfds8rkgvvthi.streamlit.app/](https://tech-challenge-04-y6hf8k3m2jfds8rkgvvthi.streamlit.app/) |
+
+---
+
 ## Aviso Médico
 
 > ⚕️ **Aviso:** Este aplicativo é uma ferramenta de apoio à decisão clínica baseada em aprendizado de máquina. Não substitui avaliação médica profissional. Os resultados devem ser interpretados por profissional de saúde habilitado.
