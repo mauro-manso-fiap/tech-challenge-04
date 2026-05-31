@@ -1,0 +1,23 @@
+# Core ML and data
+scikit-learn==1.5.1
+pandas==2.2.2
+numpy==1.26.4
+joblib==1.4.2
+xgboost==3.2.0
+optuna==4.7.0
+scipy==1.17.0
+
+# Experiment tracking
+mlflow==3.12.0
+
+# Visualization
+plotly==6.5.2
+matplotlib==3.10.8
+seaborn==0.13.2
+
+# Web app
+streamlit==1.37.0
+pillow==10.4.0
+
+# Testing
+pytest==9.0.2

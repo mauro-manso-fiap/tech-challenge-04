@@ -48,12 +48,18 @@ reports/**/*.pdf
 .docs/**/*.png
 
 # Ignore all actual data files but keep folder structure
-# Keep placeholder files and docs needed to explain data download.
+# Keep placeholder files, docs, and the dataset needed by the apps.
 data/**
 !data/
 !data/**/
 !data/**/.gitkeep
 !data/README.md
+!data/Obesity.csv
 
 # Enviroment Files
 *.env
+.env
+
+# ML artifacts — keep pipeline and metadata for Streamlit Cloud deploy
+# models/pipeline.joblib is committed (~6MB) so the apps can load it directly
+mlruns/
